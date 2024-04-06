@@ -4,7 +4,7 @@ FROM ghcr.io/actions/actions-runner:latest
 USER root
 
 RUN apt-get -y update && apt-get install -y --no-install-recommends \
-    make curl docker-compose wget git npm build-essential ssh skopeo unzip \
+    make curl docker-compose wget git npm build-essential ssh skopeo unzip jq \
   && rm -rf /var/lib/apt/lists/*
 
 RUN mkdir -p -m 755 /etc/apt/keyrings && wget -qO- https://cli.github.com/packages/githubcli-archive-keyring.gpg | tee /etc/apt/keyrings/githubcli-archive-keyring.gpg > /dev/null \
@@ -30,3 +30,6 @@ RUN cd /tmp && curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -
 RUN npm install --global yarn
 
 USER runner
+
+# Add github ssh keys for runner user
+RUN mkdir -p .ssh && curl -L https://api.github.com/meta | jq -r '.ssh_keys | .[]' | sed -e 's/^/github.com /' >> ~/.ssh/known_hosts

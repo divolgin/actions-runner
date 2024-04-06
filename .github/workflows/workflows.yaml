@@ -1,0 +1,46 @@
+on:
+    workflow_dispatch:
+      inputs:
+        ref:
+          description: "Full ref of the commit"
+          required: true
+  
+  
+  # Don't change the name of this workflow and don't rename the file. It is referenced in other workflows
+  name: "! Test workflows"
+  
+  
+  jobs:
+    # This workflow can be triggered automatically, and in that case we need to wait for the currently running release to complete.
+    # This check is harmless (and likely useful) on manual triggers as well, so there is no need to differentiate.
+    wait-for-all-to-complete:
+      runs-on: ubuntu-22.04
+      outputs:
+        next-step: ${{ steps.wait.outputs.next-step }}
+      steps:
+        - uses: actions/checkout@v4
+        - id: wait
+          uses: ./.github/actions/gate-production-release-workflow
+          with:
+            gh_token: ${{ github.token }}
+            ref: ${{ inputs.ref }}
+            run_id: ${{ github.run_id }}
+  
+    do-go:
+      if: needs.wait-for-all-to-complete.outputs.next-step == 'go'
+      runs-on: ubuntu-22.04
+      needs:
+        - wait-for-all-to-complete
+      steps:
+        - id: step1
+          run: echo "Will continue"
+  
+    do-stop:
+      if: needs.wait-for-all-to-complete.outputs.next-step == 'stop'
+      runs-on: ubuntu-22.04
+      needs:
+        - wait-for-all-to-complete
+      steps:
+        - id: step1
+          run: echo "Will stop"
+  

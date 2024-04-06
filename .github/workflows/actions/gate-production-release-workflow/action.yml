@@ -1,0 +1,18 @@
+name: 'Check Workflow'
+description: 'Check workflow'
+inputs:
+  gh_token:
+    description: 'GitHub token'
+    required: true
+  ref:
+    description: 'Full SHA of the commit'
+    required: true
+  run_id:
+    description: 'Run ID of the workflow run that triggered this action'
+    required: true
+outputs:
+  next-step:
+    description: 'Next step action: "stop" or "go"'
+runs:
+  using: 'node20'
+  main: 'index.js'
