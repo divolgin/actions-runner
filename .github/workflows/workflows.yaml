@@ -35,7 +35,7 @@ jobs:
     do-go:
         runs-on: ubuntu-22.04
         needs:
-            - wait-for-all-to-complete
+            - approve-schemahero-migrations
         if: needs.wait-for-all-to-complete.outputs.next-step == 'go'
         steps:
             - id: step1
@@ -45,7 +45,7 @@ jobs:
         if: needs.wait-for-all-to-complete.outputs.next-step == 'stop'
         runs-on: ubuntu-22.04
         needs:
-            - wait-for-all-to-complete
+            - approve-schemahero-migrations
         steps:
             - id: step1
               run: echo "Will stop"
