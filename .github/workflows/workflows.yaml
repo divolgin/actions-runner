@@ -46,8 +46,8 @@ jobs:
                   function (run) {
                     console.log(run);
                     return true;
-                    # !["check-checks", "verify-contract", "generate-vendor-portal-release-notes-pr"].includes(name) &&
-                    # (status !== "completed" || !["success", "skipped"].includes(conclusion))
+                    // !["check-checks", "verify-contract", "generate-vendor-portal-release-notes-pr"].includes(name) &&
+                    // (status !== "completed" || !["success", "skipped"].includes(conclusion))
                   } 
                 );
                 if (failed.length > 0) {
