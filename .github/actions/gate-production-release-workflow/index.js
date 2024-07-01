@@ -8,12 +8,19 @@ async function get_workflow_runs() {
 
   const octokit = github.getOctokit(token);
 
+  // Only list workflows created since yesterday. This is to avoid listing all workflows in the repo.
+  const created = new Date();
+  created.setDate(created.getDate() - 1);
+
+  console.log(`Listing workflows created since ${created.toISOString()}`);
+
   const {
     data: {
       workflow_runs,
     },
   } = await octokit.rest.actions.listWorkflowRunsForRepo({
     ...github.context.repo,
+    created: `>=${created.toISOString()}`,
   });
 
   let this_run = null;
