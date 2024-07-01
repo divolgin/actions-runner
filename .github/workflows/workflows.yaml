@@ -52,9 +52,9 @@ jobs:
                 );
                 if (failed.length > 0) {
                 core.setFailed(
-                    `There are failed or incomplete checks: ${failed
-                    .map(({ name }) => name)
-                    .join(", ")}`
+                    `There are failed or incomplete checks:\n${failed
+                    .map(({ name, html_url }) => `${name}: ${html_url}`)
+                    .join("\n")}`
                 );
               }
 
