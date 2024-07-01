@@ -81,7 +81,7 @@ async function run() {
         return;
       }
 
-      core.setOutput("next-step", "release");
+      core.setOutput("next-step", "go");
       return;
     }
   } catch (error) {
