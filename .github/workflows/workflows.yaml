@@ -24,6 +24,41 @@ jobs:
             ref: ${{ inputs.ref }}
             run_id: ${{ github.run_id }}
 
+    check-checks:
+        runs-on: ubuntu-22.04
+        needs:
+        - wait-for-all-to-complete
+        steps:
+        - uses: actions/github-script@v6
+          with:
+            script: |
+              core.notice(
+                `Jobs related to this SHA: ${context.serverUrl}/${context.repo.owner}/${
+                    context.repo.repo
+                }/actions?query=branch%3Amain+head_sha%3A${{ inputs.ref }}`
+                );
+                const check_runs = await github.paginate(github.rest.checks.listForRef, {
+                  ...context.repo,
+                  ref: "${{ inputs.ref }}",
+                  per_page: 100,
+                });
+                const failed = check_runs.filter(
+                (run) => {
+                    console.log(run);
+                    return true;
+                    # !["check-checks", "verify-contract", "generate-vendor-portal-release-notes-pr"].includes(name) &&
+                    # (status !== "completed" || !["success", "skipped"].includes(conclusion))
+                  } 
+                );
+                if (failed.length > 0) {
+                core.setFailed(
+                    `There are failed or incomplete checks: ${failed
+                    .map(({ name }) => name)
+                    .join(", ")}`
+                );
+              }
+
+
     approve-schemahero-migrations:
         needs:
         - wait-for-all-to-complete

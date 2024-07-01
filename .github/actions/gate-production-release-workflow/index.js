@@ -8,7 +8,6 @@ async function get_workflow_runs() {
 
   const octokit = github.getOctokit(token);
 
-  // Only list workflows created since yesterday. This is to avoid listing all workflows in the repo.
   const created = new Date();
   created.setDate(created.getDate() - 1);
 
@@ -55,13 +54,13 @@ async function get_workflow_runs() {
     console.log("found workflow_run", workflow_run);
 
     if (workflow_run.created_at < this_run.created_at) {
-      console.log(`Found earlier run ${workflow_run.html_url}`);
+      console.log(`Found earlier run with status ${workflow_run.status} and conclusion ${workflow_run.conclusion} at ${workflow_run.html_url}`);
       earlier_runs.push(workflow_run);
       continue;
     }
 
     if (workflow_run.created_at > this_run.created_at){
-      console.log(`Found later run ${workflow_run.html_url}`);
+      console.log(`Found later run with status ${workflow_run.status} and conclusion ${workflow_run.conclusion} at ${workflow_run.html_url}`);
       later_runs.push(workflow_run);
       continue;
     }
