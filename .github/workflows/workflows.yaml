@@ -43,7 +43,7 @@ jobs:
                   per_page: 100,
                 });
                 const failed = check_runs.filter(
-                (run) => {
+                  function (run) {
                     console.log(run);
                     return true;
                     # !["check-checks", "verify-contract", "generate-vendor-portal-release-notes-pr"].includes(name) &&

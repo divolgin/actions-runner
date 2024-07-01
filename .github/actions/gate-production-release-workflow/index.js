@@ -51,8 +51,6 @@ async function get_workflow_runs() {
       continue;
     }
 
-    console.log("found workflow_run", workflow_run);
-
     if (workflow_run.created_at < this_run.created_at) {
       console.log(`Found earlier run with status ${workflow_run.status} and conclusion ${workflow_run.conclusion} at ${workflow_run.html_url}`);
       earlier_runs.push(workflow_run);
