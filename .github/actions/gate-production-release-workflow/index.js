@@ -37,7 +37,13 @@ async function get_workflow_runs() {
     const workflow_run = workflow_runs[i];
 
     // We only want THIS workflow. If name ever changes, this comparison will not work. So don't change the name.
-    if (this_run.name !== workflow_run.name || workflow_run.status === "completed") {
+    if (this_run.name !== workflow_run.name) {
+      continue;
+    }
+
+    console.log("found workflow_run", workflow_run);
+
+    if (workflow_run.status === "completed") {
       continue;
     }
 
