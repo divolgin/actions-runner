@@ -24,6 +24,14 @@ jobs:
             ref: ${{ inputs.ref }}
             run_id: ${{ github.run_id }}
 
+    approve-schemahero-migrations:
+        needs:
+        - wait-for-all-to-complete
+        runs-on: ubuntu-22.04
+        environment: dev
+        steps: 
+        - run: echo "Approved"
+
     do-go:
         runs-on: ubuntu-22.04
         needs:
